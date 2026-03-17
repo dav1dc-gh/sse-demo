@@ -1,0 +1,1 @@
+Using the requirements in demos/05-agent-mode/requirements.md, build a complete FastAPI application with all the necessary files

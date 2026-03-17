@@ -9,6 +9,36 @@ from operator import itemgetter
 
 
 def proc_txn_batch(raw_data: list[str], cfg: dict) -> dict:
+    """
+    Process a batch of transactions and calculate financial risk metrics per account.
+    
+    This function takes raw transaction data, parses it, normalizes amounts to USD,
+    and generates a risk assessment for each account based on transaction patterns.
+    
+    **ELI5 (Explain Like I'm 5):**
+    Imagine you're a bank looking at customer transactions. This function:
+    1. Reads messy transaction records (like "TXN123|20240101120000|ACC001|PUR|100|USD|...")
+    2. Cleans them up and organizes the data nicely
+    3. Converts all money to USD if it's in a different currency
+    4. Groups transactions by account
+    5. Calculates suspicious activity scores by checking:
+       - Too many transactions in 24 hours? ⚠️
+       - Too much money spent? ⚠️
+       - API transactions over $5000? ⚠️
+       - Lots of international transfers? ⚠️
+       - Suspicious patterns (like making lots of transactions just under $10k)? ⚠️
+    6. Returns a report for each account with total spending, risk level (LOW/MEDIUM/HIGH), 
+       and whether it should be flagged for review.
+    
+    Args:
+        raw_data: List of pipe-delimited transaction strings
+        cfg: Configuration dict with keys: fx_rates, velocity_window_hrs, velocity_threshold,
+             high_value_threshold, structuring_threshold, flag_threshold
+    
+    Returns:
+        Dictionary mapping account IDs to risk analysis results including totals, 
+        risk scores, and transaction metadata
+    """
     parsed = []
     for line in raw_data:
         if not line.strip() or line.startswith('#'):
