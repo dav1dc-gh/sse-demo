@@ -54,6 +54,5 @@ scenarios/                      ← Customer scenario discussion guides
 
 ## Demo Duration
 
-- **Live coding demos:** ~45-60 minutes
-- **Scenario discussions + Q&A:** ~15-30 minutes
-- **Total:** ~60-90 minutes
+- **Live coding demos + scenario discussion:** ~25-30 minutes
+- Additional bonus material in the repo can extend to 45-60 minutes if needed

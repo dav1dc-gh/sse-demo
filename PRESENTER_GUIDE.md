@@ -3,9 +3,8 @@
 ## Overview
 
 This guide provides a structured order of operations for delivering a compelling
-GitHub Copilot demo to a prospective customer. The demo is designed to take
-**45-60 minutes** of live coding, followed by **15-30 minutes** of scenario
-discussion and Q&A.
+GitHub Copilot demo to a prospective customer. The demo is designed for
+**25-30 minutes** of live coding and scenario discussion.
 
 **Golden Rule:** Let Copilot do the talking. The most powerful moments in this
 demo are when you stop typing and let the audience watch Copilot generate code
@@ -29,316 +28,227 @@ in real time. Resist the urge to explain too much — show, don't tell.
 
 ---
 
-## Demo Flow — Order of Operations
+## Time Budget at a Glance
 
-### Opening (2-3 minutes) — No Slides, Just Talk
-
-**What to say:**
-> "GitHub Copilot is an AI-powered coding assistant that integrates directly
-> into your editor. Rather than showing you slides, I'm going to show you what
-> it can actually do. Everything you're about to see is live — no scripts,
-> no pre-recorded output."
-
-Briefly mention:
-- Copilot works in VS Code, JetBrains, Visual Studio, Neovim, and on github.com
-- It understands 50+ programming languages
-- It uses the context of your project to make relevant suggestions
-- Available at Individual, Business, and Enterprise tiers
+| Segment | Duration | Features Shown |
+|---------|----------|---------------|
+| Opening | 1 min | — |
+| Demo 1: Code Completion | 5 min | Ghost text, Tab-accept, context-awareness |
+| Demo 2: Chat — Explain, Refactor, Doc | 5 min | Chat, /explain, /doc, /fix, inline chat |
+| Demo 3: Agent Mode | 5 min | Autonomous multi-file generation |
+| Demo 4: Test Generation | 3 min | /tests, runnable output |
+| Demo 5: COBOL → Java | 4 min | Language translation, Scenario 1 segue |
+| Scenario Discussion & Q&A | 5-7 min | Scenarios 1, 2, 3 |
+| **Total** | **28-30 min** | |
 
 ---
 
-### Demo 1: Code Completion — "The Autocomplete on Steroids" (8-10 min)
+## Demo Flow — Order of Operations
+
+### Opening (1 minute) — No Slides, Just Talk
+
+**What to say:**
+> "GitHub Copilot is an AI-powered coding assistant that lives inside your editor.
+> Rather than slides, I'm going to show you what it does — live. It works in
+> VS Code, JetBrains, Visual Studio, and more, across 50+ languages, and is
+> available at Individual, Business, and Enterprise tiers. Let's jump in."
+
+---
+
+### Demo 1: Code Completion — "Autocomplete on Steroids" (5 min)
 
 **File:** `demos/01-code-completion/inventory_manager_starter.py`
-**Reference:** `demos/01-code-completion/inventory_manager_reference.py`
+**Fallback:** `demos/01-code-completion/inventory_manager_reference.py`
 
 **Goal:** Show that Copilot generates entire methods from minimal context.
 
 #### Steps:
-1. **Open the starter file** — show the audience the `Product` dataclass and
-   empty `InventoryManager` class with just `__init__`
+1. **Open the starter file** — briefly show the `Product` dataclass and
+   empty `InventoryManager` class
 2. **Type the method signature**: `def add_product(self, product: Product) -> bool:`
    - Pause. Let Copilot suggest the full method body
-   - Accept with Tab. Point out: "I typed one line, Copilot wrote eight"
+   - Accept with Tab. Say: "I typed one line, Copilot wrote eight"
 3. **Type a comment**: `# Search products by name or category`
    - Press Enter and pause — Copilot generates the entire search method
-   - Highlight: "It understood our data model and created a filter method"
+   - "It understood our data model and created a filter method"
 4. **Type**: `def get_low_stock_products`
-   - Copilot should suggest using `reorder_threshold` — point out it understood
-     the semantic meaning of the field, not just the name
-5. **Type**: `def generate_inventory_report`
-   - Let Copilot generate a multi-line formatted report
-   - Show cycling through alternatives with Alt+] if the first suggestion isn't perfect
-6. **Type**: `if __name__ == "__main__":`
-   - Watch Copilot generate realistic sample data and usage examples
-   - Point out: "It created products across different categories with realistic
-     names and prices — this isn't random data"
-7. **Run the code** in terminal to show it actually works
+   - Point out it uses `reorder_threshold` — it understood the *semantics*
+5. **Type**: `if __name__ == "__main__":`
+   - Watch Copilot generate realistic sample data and a usage example
+6. **Run the code** in terminal — show it works
 
-**Key talking points during this demo:**
-- "Copilot understands the *context* of this file — it knows about the Product class,
-  the Category enum, and uses them correctly"
-- "Ghost text appears as you type — you accept with Tab, reject with Esc"
-- "This isn't just autocomplete — it's generating *correct business logic*"
-
-**Prompt Engineering Tip to Mention:**
-> "Notice how a descriptive comment or a clear method signature is all Copilot
-> needs. The more context you give — good variable names, type hints, docstrings
-> — the better the suggestions. This is prompt engineering for code."
+**Key line to deliver:**
+> "This isn't autocomplete — it's generating correct business logic.
+> The more context you give (type hints, good names, comments) the better
+> the suggestions. That's prompt engineering for code."
 
 ---
 
-### Demo 2: Chat & Explain — "Your AI Pair Programmer" (5-7 min)
+### Demo 2: Chat — Explain, Refactor & Document (5 min)
 
+This demo showcases **three Chat capabilities in rapid succession** using two files.
+
+#### Part A — Explain Legacy Code (2 min)
 **File:** `demos/02-chat-and-explain/legacy_processor.py`
 
-**Goal:** Show that Copilot Chat can explain complex, unfamiliar code.
+1. **Open the file** — say: "You've just joined a team and you're handed this.
+   No docs, cryptic names, dense logic."
+2. **Select the `proc_txn_batch` function**
+3. **In Chat, ask**: "Explain this code"
+   - Copilot breaks it down: parsing, FX conversion, grouping, risk scoring
+   - "30 seconds to understand code that would take 30 minutes to read"
 
-#### Steps:
-1. **Open the file** — scroll through and say: "Imagine you've just joined a
-   team and you're handed this file. No documentation, cryptic variable names,
-   dense logic. This happens every day in every company."
-2. **Select the entire `proc_txn_batch` function** (lines 30-100 approximately)
-3. **In Copilot Chat, ask**: "Explain this code"
-   - Copilot will break down: parsing, FX conversion, grouping, risk scoring
-   - Point out: "In 30 seconds, I understand code that would take me 30 minutes to read"
-4. **Select the `validate_account_id` function** (the dense regex)
-5. **Ask**: "What does this regex validate?"
-   - Copilot will explain: IBAN, US routing numbers, and SWIFT codes
-6. **Select `find_related_transactions`**
-7. **Ask**: "What is the time complexity of this function?"
-   - Copilot will identify the BFS pattern and analyze complexity
-8. **Ask**: "Is there a bug in this code?" or "What edge cases could break this?"
-   - Copilot will identify potential issues
+#### Part B — Refactor Messy Code (1.5 min)
+**File:** `demos/05-refactoring/messy_code.py`
 
-**Key talking points:**
-- "This is incredibly powerful for onboarding and knowledge transfer"
-- "For your outsourced developers: they can understand any codebase instantly"
-- "For your COBOL migration (Scenario 1): developers can understand legacy code
-  before converting it"
+1. **Open the file** — let the audience see the horror
+2. **Select the `do_stuff` function**
+3. **Ask Chat**: "Refactor this following clean code principles"
+   - Watch it transform: proper names, separated functions, type hints
+   - "Every codebase has code like this. Copilot makes cleanup effortless"
+
+#### Part C — Generate Documentation (1.5 min)
+**File:** `demos/06-documentation/api_service.py`
+
+1. **Open the file** — "Zero documentation."
+2. **Select the `WeatherApiClient` class**, use Chat: `/doc`
+   - Copilot generates docstrings for every method
+   - "Documentation goes from a 30-minute chore to a 30-second task"
+
+**Key line to deliver:**
+> "Chat isn't just Q&A — it explains, refactors, documents, and finds bugs.
+> It's a senior pair programmer that's always available."
 
 ---
 
-### Demo 3: Agent Mode — "Build From Requirements" (8-10 min)
+### Demo 3: Agent Mode — "Build From Requirements" (5 min)
 
 **File:** `demos/03-agent-mode/requirements.md`
 
 **Goal:** Show Copilot Agent Mode autonomously building a complete application.
 
 #### Steps:
-1. **Open the requirements file** — show the audience the specifications
-2. **Open Copilot Chat** and switch to **Agent Mode** (look for the @ or Agent toggle)
-3. **Paste or reference the requirements**: "Using the requirements in
+1. **Open the requirements file** — briefly show the data model and endpoints
+2. **Switch Chat to Agent Mode** then prompt: "Using the requirements in
    demos/03-agent-mode/requirements.md, build a complete FastAPI application
    with all the necessary files"
-4. **Watch Agent Mode work**:
-   - It will create multiple files (models, routes, database, main app)
-   - It may install dependencies
-   - It iterates if there are errors — point this out!
-5. **Show the generated files** — open each one briefly
-6. **Run the application** if time permits (though the wow-factor is the generation)
+3. **Narrate while Agent works** (it takes 2-3 min):
+   - "It's creating models, routes, a database layer, and the main app"
+   - "Notice it ran a command and got an error — now it's fixing it automatically"
+4. **Quick scan** the generated files when it finishes
 
-**Key talking points:**
-- "Agent Mode is different from regular Chat — it can create files, run commands,
-  and iterate autonomously"
-- "I gave it a natural language spec, and it built a complete, working API"
-- "This is how Copilot accelerates greenfield development"
+**Key lines to deliver:**
+> "I gave it a natural language spec, and it built a working API — multiple files,
+> proper structure, validation, error handling. Agent Mode creates files, runs
+> commands, and iterates on errors autonomously."
 
-**Time management:** This demo can take 3-5 minutes for Agent to complete. If
-running short on time, you can show the requirements, start Agent, and switch to
-narrating what it's doing rather than waiting for completion.
+**If Agent is slow:** Start it, narrate for 30 seconds, then say: "This will
+continue working — let me show you the next demo and we'll come back to the results."
 
 ---
 
-### Demo 4: Test Generation — "/tests" (5-7 min)
+### Demo 4: Test Generation (3 min)
 
 **File:** `demos/04-test-generation/shopping_cart.py`
 
 **Goal:** Show Copilot generating comprehensive, runnable unit tests.
 
 #### Steps:
-1. **Open the file** — briefly walk through the ShoppingCart class
-2. **Select the entire class** (or the whole file)
-3. **Use Copilot Chat**: `/tests` or ask "Generate comprehensive unit tests for this class"
-4. **Show the generated tests**:
-   - Point out test names are descriptive
-   - Note edge cases: empty cart, invalid quantities, expired discounts
-   - Show it correctly tests the tax calculation logic
-   - Show it creates proper test fixtures and setup
-5. **Save the generated test file** and **run the tests**:
+1. **Open the file** — "Here's a shopping cart with pricing, discounts, and tax"
+2. **Select the entire `ShoppingCart` class**
+3. **Chat**: `/tests`
+4. **Highlight the output** — descriptive test names, edge cases (empty cart,
+   expired discounts, invalid quantities), proper fixtures
+5. **Save and run**:
    ```bash
-   cd demos/04-test-generation
-   python -m pytest test_shopping_cart.py -v
+   cd demos/04-test-generation && python -m pytest test_shopping_cart.py -v
    ```
-6. **Show that tests pass** — this is the mic-drop moment
+6. **Tests pass** — mic-drop moment
 
-**Key talking points:**
-- "Writing tests is the task developers avoid the most. Copilot removes that friction"
-- "It didn't just test the happy path — it found edge cases automatically"
-- "This directly addresses code quality metrics for your management (Scenario 2)"
-
-**Prompt Engineering Tip:**
-> "You can ask for specific test styles: 'Generate pytest tests with fixtures',
-> 'Write tests using unittest.TestCase', 'Include property-based tests'.
-> The more specific your prompt, the more tailored the output."
+**Key line to deliver:**
+> "Testing is the task developers skip the most. Copilot removes that friction —
+> and it found edge cases I might have missed."
 
 ---
 
-### Demo 5: Refactoring — "Clean Up Legacy Code" (5-7 min)
-
-**File:** `demos/05-refactoring/messy_code.py`
-
-**Goal:** Show Copilot identifying code smells and producing clean refactored code.
-
-#### Steps:
-1. **Open the file** — let the audience see the horror
-2. **Ask Copilot Chat**: "What are the code smells in this file?"
-   - It will enumerate: God function, poor naming, deep nesting, magic numbers,
-     duplicated logic, no type hints, bare except, etc.
-3. **Select the `do_stuff` function**
-4. **Ask**: "Refactor this function following clean code principles"
-   - Watch Copilot transform it into well-named functions with proper types
-5. **Select the `calc` function**
-6. **Use inline chat** (Cmd+I): "Simplify this by reducing nesting"
-   - Show the before/after side by side
-7. **Select the `make_report` function**
-8. **Ask**: "Refactor this to use the Strategy pattern"
-   - Show how Copilot applies design patterns
-
-**Key talking points:**
-- "Every codebase has code like this — Copilot makes refactoring approachable"
-- "The `/fix` command is great for smaller issues — try it on your own code"
-- "For your outsourced teams (Scenario 3): better code quality = less rework in reviews"
-
----
-
-### Demo 6: Documentation Generation (3-5 min)
-
-**File:** `demos/06-documentation/api_service.py`
-
-**Goal:** Show Copilot generating professional documentation.
-
-#### Steps:
-1. **Open the file** — point out: "Zero documentation. Every method is a mystery."
-2. **Select the entire `WeatherApiClient` class**
-3. **Use Copilot Chat**: `/doc`
-   - Copilot generates Google/NumPy-style docstrings for every method
-4. **Ask**: "Generate a README.md with usage examples for this module"
-   - Show it creates a complete documentation page
-5. **Bonus (if time)**: Ask "Generate an OpenAPI spec for this service's endpoints"
-
-**Key talking points:**
-- "Documentation is the first thing to be skipped under deadline pressure"
-- "Copilot makes documentation a 30-second task instead of a 30-minute chore"
-- "For your COBOL code (Scenario 1): generate documentation for legacy systems
-  that have none"
-
----
-
-### Demo 7: COBOL-to-Java Conversion (5-7 min) — Scenario 1 Demo
+### Demo 5: COBOL → Java (4 min) — Scenario 1 Segue
 
 **File:** `demos/07-cobol-to-java/customer-report.cbl`
-**Discussion guide:** `scenarios/scenario1-cobol-migration.md`
 
-**Goal:** Show a live COBOL-to-Java conversion and set up the Scenario 1 discussion.
-
-#### Steps:
-1. **Open the COBOL file** — let the audience absorb COBOL syntax
-2. **Ask Copilot Chat**: "Explain what this COBOL program does in plain English"
-   - Show that Copilot understands COBOL perfectly
-3. **Ask**: "Convert this entire COBOL program to Java"
-   - Watch the conversion happen — data structures become classes, paragraphs
-     become methods, copybooks become enums
-4. **Point out specific conversion quality:**
-   - COBOL's `PIC S9(9)V99` → Java's `BigDecimal`
-   - `EVALUATE TRUE` → Java `switch` or `if/else`
-   - `88-level conditions` → Java enums or boolean methods
-   - Report formatting preserved
-5. **Ask**: "Now write JUnit 5 tests for this Java code"
-6. **Transition to Scenario 1 discussion** (see below)
-
----
-
-### Demo 8: Coding Agent (3-5 min) — Concept/Walkthrough
-
-**File:** `demos/08-coding-agent/feature_request.md`
-
-**Goal:** Explain the Coding Agent workflow and how it fits into development.
+**Goal:** Show live COBOL translation and tee up the scenario discussion.
 
 #### Steps:
-1. **Open the feature request** — show it as a well-defined GitHub Issue
-2. **Explain the workflow**:
-   - "In GitHub, you would assign this issue to `@copilot`"
-   - "Copilot Coding Agent reads the issue, creates a branch, implements the
-     feature, writes tests, and opens a pull request"
-   - "A human reviews the PR, provides feedback, and merges"
-3. **If you have Coding Agent access**: Create the issue live and assign it
-4. **If not**: Walk through the concept and show a pre-built example PR
+1. **Open the COBOL file** — let the audience absorb the syntax for 10 seconds
+2. **Ask Chat**: "Explain what this COBOL program does"
+   - Copilot summarizes: reads customer/transaction records, calculates balances,
+     applies interest/fees, generates a statement report
+3. **Ask**: "Convert this COBOL program to Java"
+   - Point out: `PIC S9(9)V99` → `BigDecimal`, `EVALUATE` → `switch`,
+     88-level conditions → enums, paragraphs → methods
+4. **Say**: "This is one program. For millions of lines, you need a migration
+   strategy — but Copilot is the engine that makes each conversion fast and
+   high-quality. Let's talk about that."
 
-**Key talking points:**
-- "This is the most autonomous Copilot gets — and it still creates a PR for review"
-- "Perfect for well-defined, scoped tasks"
-- "It doesn't replace developers — it handles the implementation so they can
-  focus on design, architecture, and review"
+**Transition to scenarios.**
 
 ---
 
-## Scenario Discussions (15-20 min)
+## Scenario Discussion & Q&A (5-7 min)
 
-After the demos, transition to the customer-specific scenarios. You may want to
-tie each scenario back to a specific demo you just showed.
+Move to a conversational format. Briefly address each scenario — point the
+customer to the detailed guides for deeper follow-up.
 
-### Scenario 1: COBOL Migration
-**Guide:** `scenarios/scenario1-cobol-migration.md`
+### Scenario 1: COBOL Migration (2 min)
+**Guide for your prep:** `scenarios/scenario1-cobol-migration.md`
 
-**Key message:** Copilot is the best tool available for program-by-program COBOL
-conversion, but it's an *accelerator* for a migration strategy, not a push-button
-solution. The customer needs a phased approach (Strangler Fig pattern).
+**Key messages to deliver:**
+- Copilot is the **best accelerator** for program-by-program conversion —
+  what takes a developer a week can be done in hours
+- But it's not a push-button migration: data migration, integration testing,
+  and operational parity still require a strategy
+- **Recommended approach**: Strangler Fig pattern — convert one program at a time,
+  validate, cut over, repeat
+- Copilot also helps developers *understand* COBOL before converting it (Demo 2)
 
-**Tie back to:** Demo 7 (COBOL conversion) and Demo 2 (code explanation for
-understanding legacy systems before migrating them).
+### Scenario 2: Measuring Impact (2 min)
+**Guide for your prep:** `scenarios/scenario2-measuring-impact.md`
 
-### Scenario 2: Measuring Impact
-**Guide:** `scenarios/scenario2-measuring-impact.md`
+**Key messages to deliver:**
+- Run a **4-6 week pilot** with 2-4 teams; measure before and after
+- Three pillars: **Quantitative** (PR cycle time, Copilot acceptance rate,
+  DORA metrics), **Qualitative** (developer satisfaction surveys),
+  **Business ROI** (time saved × loaded cost vs. $19/user/month)
+- GitHub's research: 55% faster task completion, 75% higher satisfaction
+- Even at a conservative 30 min saved/dev/day, ROI is ~40x
 
-**Key message:** Use a structured pilot program measuring three pillars:
-quantitative metrics (PR cycle time, acceptance rate, DORA metrics), qualitative
-metrics (developer satisfaction surveys), and business impact (ROI calculation).
-The ROI math is compelling even with conservative assumptions.
+### Scenario 3: Outsourcing & Junior Automation (2 min)
+**Guide for your prep:** `scenarios/scenario3-outsourcing-automation.md`
 
-**Tie back to:** Demo 4 (test generation — measurable quality improvement),
-Demo 1 (code completion — measurable time savings).
+**Key messages to deliver:**
+- **Reframe**: "amplify everyone" not "replace juniors." Juniors benefit the
+  *most* — Copilot elevates them toward mid-level performance
+- The right model: **more throughput from the same team**, not fewer people
+- Copilot still requires human judgment — code review, architecture, requirements.
+  Even Coding Agent (which can implement issues autonomously) creates PRs that
+  need human review
+- Better first-draft quality from outsourced teams = less rework in reviews
 
-### Scenario 3: Outsourcing & Junior Automation
-**Guide:** `scenarios/scenario3-outsourcing-automation.md`
-
-**Key message:** Reframe from "replace juniors" to "amplify everyone." Juniors
-benefit the *most* from Copilot — it elevates them toward mid-level performance.
-The right model is "more throughput from the same team" not "same throughput from
-fewer people."
-
-**Tie back to:** Demo 3 (Agent Mode — accelerates work but requires human review),
-Demo 5 (refactoring — higher quality reduces rework cycles with outsourced teams).
+**Q&A bridge:**
+> "Those are the three scenarios — happy to go deeper on any of them.
+> What questions do you have?"
 
 ---
 
-## Prompt Engineering Tips to Sprinkle Throughout
+## Prompt Engineering Tips to Weave In Naturally
 
-Share these naturally during the demo, not as a separate section:
+Don't present these as a list — drop them during demos where they fit:
 
-1. **Be specific**: "Write a function that validates an email address using regex"
-   is better than "validate email"
-2. **Provide context**: Open related files, use `@workspace` in chat to give Copilot
-   full project context
-3. **Iterate**: If the first suggestion isn't right, refine your prompt. "Make it
-   async" or "Use a list comprehension instead"
-4. **Use types and names**: `def calculate_tax(income: float, state: str) -> float:`
-   gives Copilot far more to work with than `def calc(x, y)`
-5. **Comments as prompts**: A well-written comment before code is the simplest form
-   of prompt engineering
-6. **Slash commands**: `/tests`, `/doc`, `/fix`, `/explain` — purpose-built for
-   common tasks
-7. **Reference files**: Use `#file:filename.py` in chat to reference specific files
+- **Demo 1**: "Good names and type hints ARE the prompt — that's prompt engineering for code"
+- **Demo 2**: "Slash commands like `/explain`, `/doc`, `/fix` are built-in shortcuts"
+- **Demo 3**: "The more specific the requirements, the better Agent Mode's output"
+- **Demo 4**: "You can ask for a specific style: 'pytest with fixtures' or 'unittest.TestCase'"
+- **Anytime**: "If the first suggestion isn't right, iterate: 'Make it async' or 'Use a list comprehension'"
+- **Anytime**: "Use `#file:name.py` in Chat to reference specific files, or `@workspace` for full project context"
 
 ---
 
@@ -353,31 +263,40 @@ Share these naturally during the demo, not as a separate section:
 | "What's the difference between Business and Enterprise?" | Enterprise adds: organization-wide policy management, audit logs, IP indemnity, knowledge bases (index your internal repos for better context), and fine-tuned models. |
 | "Can we self-host it?" | Copilot runs as a cloud service. Your code is sent to the model for processing but NOT stored. Enterprise customers get data residency options. |
 | "What about security — can it generate vulnerable code?" | Copilot includes an AI-based vulnerability filter that blocks common insecure patterns (SQL injection, hardcoded credentials, etc.). But like any code, Copilot output should go through your standard review process. |
+| "What is Coding Agent?" | You can assign a GitHub Issue to `@copilot` and it autonomously creates a branch, implements the feature, writes tests, and opens a PR for human review. See `demos/08-coding-agent/feature_request.md` for an example. |
 
 ---
 
-## Closing (2-3 minutes)
+## Closing (1 minute)
 
 **What to say:**
-> "What you've seen today is a tool that meets developers where they already work —
-> inside their editor. It doesn't change their workflow; it supercharges it.
-> Whether you're modernizing COBOL, measuring developer productivity, or getting
-> more from your development teams, Copilot delivers measurable, immediate value.
->
-> The best way to see if it works for your team is to try it. I'd recommend
-> starting with a focused pilot — we can help structure that — and letting the
-> data speak for itself."
+> "Copilot meets developers where they already work — inside their editor.
+> It doesn't change the workflow; it supercharges it. Whether you're modernizing
+> legacy code, measuring productivity, or getting more from your teams, it
+> delivers measurable, immediate value. The best next step is a focused pilot.
+> We can help structure that — let the data speak for itself."
 
 ---
 
 ## Emergency Fallbacks
 
-If Copilot isn't responding or gives poor suggestions during the demo:
-
 1. **Network issues**: Tether to your phone. Copilot requires internet access.
-2. **Poor suggestions**: Say "Let me show you prompt engineering in action" — refine
-   the prompt and iterate. This is actually a *good* demo moment.
+2. **Poor suggestions**: Say "Let me show you prompt engineering in action" —
+   refine the prompt and iterate. This is actually a *good* demo moment.
 3. **Totally stuck**: Use the `_reference.py` files to show completed code and say
    "Here's what Copilot generated during my prep" — but always try live first.
 4. **Agent Mode is slow**: Start it, narrate what's happening, and move to the
    next demo. Come back to show results.
+
+---
+
+## Bonus Material (if you have extra time or a follow-up session)
+
+The following files are included in the repo and can extend the demo if needed:
+
+- **`demos/05-refactoring/messy_code.py`** — Full refactoring deep-dive (ask Chat
+  to enumerate code smells, apply Strategy pattern, etc.)
+- **`demos/06-documentation/api_service.py`** — Extended documentation demo
+  (generate a full README, an OpenAPI spec, usage examples)
+- **`demos/08-coding-agent/feature_request.md`** — Live Coding Agent demo
+  (create a GitHub Issue, assign to `@copilot`, show the resulting PR)
