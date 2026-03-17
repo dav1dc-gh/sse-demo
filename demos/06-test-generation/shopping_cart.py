@@ -1,26 +1,4 @@
-"""
-Shopping Cart — Test Generation Demo
-
-This module implements a fully working shopping cart with pricing logic,
-discount codes, tax calculation, and checkout validation.
-
-DEMO INSTRUCTIONS:
-==================
-1. Open this file alongside Copilot Chat
-2. Select the entire ShoppingCart class
-3. Use the Copilot Chat command: /tests
-4. Watch Copilot generate comprehensive test cases covering:
-   - Adding/removing items
-   - Quantity updates
-   - Discount code application
-   - Tax calculations
-   - Edge cases (empty cart, invalid quantities, expired discounts)
-5. Run the generated tests to show they pass
-
-ALTERNATIVE APPROACH:
-- Right-click on a method → Copilot → Generate Tests
-- Or use inline chat (Cmd+I / Ctrl+I) and type "write unit tests for this"
-"""
+"""Shopping cart with pricing, discounts, tax calculation, and checkout."""
 
 from dataclasses import dataclass, field
 from datetime import datetime, date

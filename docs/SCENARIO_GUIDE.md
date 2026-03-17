@@ -3,7 +3,7 @@
 This document provides in-depth guidance for handling the three customer scenarios
 during and after the demo. Read this before the presentation to internalize the
 key arguments, reframes, and objection responses. The per-scenario files in
-`scenarios/` contain additional reference material (objection tables, pilot
+`docs/` contain additional reference material (objection tables, pilot
 templates, etc.) that you can consult during Q&A.
 
 ---

@@ -1,20 +1,4 @@
-"""
-Legacy Data Processing Pipeline — "Explain This Code" Demo
-
-This file contains intentionally dense, poorly documented code that processes
-financial transaction records. It is designed to showcase Copilot Chat's
-ability to explain complex or unfamiliar code.
-
-DEMO INSTRUCTIONS:
-==================
-1. Select a block of code and ask Copilot Chat: "Explain this code"
-2. Ask follow-up questions like:
-   - "What does the lambda on line X do?"
-   - "Is there a potential bug in this function?"
-   - "What edge cases could break this?"
-3. Try: "Explain this code as if I'm a junior developer"
-4. Try: "/doc" command to generate docstrings for functions
-"""
+"""Legacy data processing pipeline for financial transaction records."""
 
 import re
 from collections import defaultdict
@@ -24,7 +8,6 @@ from itertools import groupby
 from operator import itemgetter
 
 
-# DEMO: Select this entire function and ask Copilot to explain it
 def proc_txn_batch(raw_data: list[str], cfg: dict) -> dict:
     parsed = []
     for line in raw_data:
@@ -130,7 +113,6 @@ def detect_structuring(txns: list[dict], threshold: float) -> bool:
     return False
 
 
-# DEMO: Ask Copilot Chat "What does this regex do?" and "Can you simplify this?"
 def validate_account_id(acct_id: str) -> bool:
     return bool(re.match(
         r'^(?:(?:(?:[A-Z]{2}\d{2})(?:\s?[A-Z0-9]{4}){2,7}(?:\s?[A-Z0-9]{1,4})?)|'
@@ -140,7 +122,6 @@ def validate_account_id(acct_id: str) -> bool:
     ))
 
 
-# DEMO: Select this and ask "What is the time complexity of this function?"
 def find_related_transactions(txns: list[dict], target_tid: str, depth: int = 3) -> list[dict]:
     target = next((t for t in txns if t['tid'] == target_tid), None)
     if not target:

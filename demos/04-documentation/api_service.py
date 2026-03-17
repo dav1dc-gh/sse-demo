@@ -1,18 +1,4 @@
-"""
-Undocumented API Service — Documentation Generation Demo
 
-This module implements an API client for a weather service.
-It is intentionally written WITHOUT any docstrings or comments.
-
-DEMO INSTRUCTIONS:
-==================
-1. Select the entire file and use Copilot Chat: /doc
-2. Or select individual methods, right-click → Copilot → Generate Docs
-3. Ask Copilot Chat: "Generate a README.md for this module"
-4. Ask: "Generate an OpenAPI/Swagger spec for this service"
-5. Ask: "Create a usage guide with examples for this module"
-6. Show inline chat (Cmd+I): "Add docstrings to all methods in this class"
-"""
 
 import hashlib
 import hmac

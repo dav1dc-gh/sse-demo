@@ -23,7 +23,7 @@ in real time. Resist the urge to explain too much — show, don't tell.
 - [ ] Python installed (for running demo code)
 - [ ] Close all other VS Code tabs — start clean
 - [ ] Test-run Demo 1 (code completion) to verify Copilot is responding
-- [ ] Review the 3 scenario guides in `scenarios/` folder
+- [ ] Review the 3 scenario guides in `docs/` folder
 - [ ] Disable "Do Not Disturb" / notifications on your machine
 
 ---
@@ -99,7 +99,7 @@ This demo showcases **three Chat capabilities in rapid succession** using two fi
    - "30 seconds to understand code that would take 30 minutes to read"
 
 #### Part B — Refactor Messy Code (1.5 min)
-**File:** `demos/05-refactoring/messy_code.py`
+**File:** `demos/03-refactoring/messy_code.py`
 
 1. **Open the file** — let the audience see the horror
 2. **Select the `do_stuff` function**
@@ -108,7 +108,7 @@ This demo showcases **three Chat capabilities in rapid succession** using two fi
    - "Every codebase has code like this. Copilot makes cleanup effortless"
 
 #### Part C — Generate Documentation (1.5 min)
-**File:** `demos/06-documentation/api_service.py`
+**File:** `demos/04-documentation/api_service.py`
 
 1. **Open the file** — "Zero documentation."
 2. **Select the `WeatherApiClient` class**, use Chat: `/doc`
@@ -123,14 +123,14 @@ This demo showcases **three Chat capabilities in rapid succession** using two fi
 
 ### Demo 3: Agent Mode — "Build From Requirements" (5 min)
 
-**File:** `demos/03-agent-mode/requirements.md`
+**File:** `demos/05-agent-mode/requirements.md`
 
 **Goal:** Show Copilot Agent Mode autonomously building a complete application.
 
 #### Steps:
 1. **Open the requirements file** — briefly show the data model and endpoints
 2. **Switch Chat to Agent Mode** then prompt: "Using the requirements in
-   demos/03-agent-mode/requirements.md, build a complete FastAPI application
+   demos/05-agent-mode/requirements.md, build a complete FastAPI application
    with all the necessary files"
 3. **Narrate while Agent works** (it takes 2-3 min):
    - "It's creating models, routes, a database layer, and the main app"
@@ -149,7 +149,7 @@ continue working — let me show you the next demo and we'll come back to the re
 
 ### Demo 4: Test Generation (3 min)
 
-**File:** `demos/04-test-generation/shopping_cart.py`
+**File:** `demos/06-test-generation/shopping_cart.py`
 
 **Goal:** Show Copilot generating comprehensive, runnable unit tests.
 
@@ -161,7 +161,7 @@ continue working — let me show you the next demo and we'll come back to the re
    expired discounts, invalid quantities), proper fixtures
 5. **Save and run**:
    ```bash
-   cd demos/04-test-generation && python -m pytest test_shopping_cart.py -v
+   cd demos/06-test-generation && python -m pytest test_shopping_cart.py -v
    ```
 6. **Tests pass** — mic-drop moment
 
@@ -199,7 +199,7 @@ Move to a conversational format. Briefly address each scenario — point the
 customer to the detailed guides for deeper follow-up.
 
 ### Scenario 1: COBOL Migration (2 min)
-**Guide for your prep:** `scenarios/scenario1-cobol-migration.md`
+**Guide for your prep:** `docs/scenario1-cobol-migration.md`
 
 **Key messages to deliver:**
 - Copilot is the **best accelerator** for program-by-program conversion —
@@ -211,7 +211,7 @@ customer to the detailed guides for deeper follow-up.
 - Copilot also helps developers *understand* COBOL before converting it (Demo 2)
 
 ### Scenario 2: Measuring Impact (2 min)
-**Guide for your prep:** `scenarios/scenario2-measuring-impact.md`
+**Guide for your prep:** `docs/scenario2-measuring-impact.md`
 
 **Key messages to deliver:**
 - Run a **4-6 week pilot** with 2-4 teams; measure before and after
@@ -222,7 +222,7 @@ customer to the detailed guides for deeper follow-up.
 - Even at a conservative 30 min saved/dev/day, ROI is ~40x
 
 ### Scenario 3: Outsourcing & Junior Automation (2 min)
-**Guide for your prep:** `scenarios/scenario3-outsourcing-automation.md`
+**Guide for your prep:** `docs/scenario3-outsourcing-automation.md`
 
 **Key messages to deliver:**
 - **Reframe**: "amplify everyone" not "replace juniors." Juniors benefit the
@@ -294,9 +294,9 @@ Don't present these as a list — drop them during demos where they fit:
 
 The following files are included in the repo and can extend the demo if needed:
 
-- **`demos/05-refactoring/messy_code.py`** — Full refactoring deep-dive (ask Chat
-  to enumerate code smells, apply Strategy pattern, etc.)
-- **`demos/06-documentation/api_service.py`** — Extended documentation demo
+- **`demos/03-refactoring/messy_code.py`** — Full refactoring deep-dive (ask Chat
+   to enumerate code smells, apply Strategy pattern, etc.)
+- **`demos/04-documentation/api_service.py`** — Extended documentation demo
   (generate a full README, an OpenAPI spec, usage examples)
 - **`demos/08-coding-agent/feature_request.md`** — Live Coding Agent demo
   (create a GitHub Issue, assign to `@copilot`, show the resulting PR)

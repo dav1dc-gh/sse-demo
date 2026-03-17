@@ -1,31 +1,10 @@
-"""
-Messy Code — Refactoring Demo
-
-This file contains intentionally BAD code that works but is poorly structured,
-uses bad naming conventions, has code smells, and violates clean code principles.
-
-DEMO INSTRUCTIONS:
-==================
-1. Select the entire file (or individual functions)
-2. Open Copilot Chat and ask: "Refactor this code to follow clean code principles"
-3. Or try more specific prompts:
-   - "Refactor this to use proper naming conventions"
-   - "Extract this into smaller, well-named functions"
-   - "Apply the Single Responsibility Principle to this code"
-   - "Convert this to use modern Python idioms"
-4. Try the inline chat (Cmd+I): "Fix the code smells in this function"
-5. Show the /fix command to address potential bugs
-
-BONUS: Ask Copilot "What are the code smells in this file?" and watch it
-enumerate everything that's wrong.
-"""
+"""Data processing utilities — inherited from legacy codebase."""
 
 import json
 import os
 from datetime import datetime
 
 
-# Bad: God function that does everything
 def do_stuff(d, t, flag1=True, flag2=False, x=None):
     r = []
     for i in range(len(d)):
@@ -85,7 +64,6 @@ def do_stuff(d, t, flag1=True, flag2=False, x=None):
     return r
 
 
-# Bad: Deeply nested conditionals, magic numbers, no error handling
 def calc(data):
     result = {}
     for k in data:
@@ -126,7 +104,6 @@ def calc(data):
     return result
 
 
-# Bad: Duplicated logic, poor separation of concerns
 def make_report(data, fmt):
     output = ''
     if fmt == 'text':
@@ -159,7 +136,6 @@ def make_report(data, fmt):
     return output
 
 
-# Bad: Using index-based iteration, unclear variable names, no type hints
 def merge(l1, l2, k):
     r = {}
     for i in range(len(l1)):

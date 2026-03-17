@@ -1,21 +1,6 @@
-# Agent Mode Demo — Build a REST API from Requirements
+# Employee Directory API — Requirements
 
-## Demo Instructions
-
-Open VS Code Copilot Chat in **Agent Mode** and paste the requirements below.
-Copilot will scaffold the entire project, create files, install dependencies, and
-generate working code — all autonomously.
-
-**Prompt to use:**
-> "Using the requirements below, build a complete FastAPI application with all the
-> necessary files. Use Python with FastAPI, Pydantic models, and an in-memory
-> SQLite database. Include proper error handling and input validation."
-
----
-
-## Requirements: Employee Directory API
-
-### Overview
+## Overview
 Build a simple Employee Directory REST API for a small company.
 
 ### Data Model — Employee

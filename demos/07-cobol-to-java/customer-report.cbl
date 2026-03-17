@@ -5,19 +5,6 @@
       * This COBOL program reads customer and transaction records,
       * calculates monthly balances, applies interest and fees,
       * and generates a formatted monthly statement report.
-      *
-      * DEMO INSTRUCTIONS:
-      * ==================
-      * 1. Open this file and ask Copilot Chat:
-      *    "Convert this COBOL program to Java"
-      * 2. Watch Copilot translate the entire program including:
-      *    - Data structures → Java classes
-      *    - Paragraph logic → Methods
-      *    - File I/O → Java file handling
-      *    - Report formatting → String formatting
-      * 3. Follow up with: "Add unit tests for the Java version"
-      * 4. Discuss with audience: This is a STARTING POINT, not a
-      *    push-button migration (see Scenario 1 discussion guide)
       ******************************************************************
 
        IDENTIFICATION DIVISION.
