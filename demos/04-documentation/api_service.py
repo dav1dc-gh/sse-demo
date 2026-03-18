@@ -70,12 +70,32 @@ class WeatherData:
 
 
 class WeatherApiClient:
+    """Client for interacting with the Weather Service API (v2).
+
+    Provides methods to retrieve current weather, forecasts, and air quality
+    data for one or more locations. Responses are cached in memory to reduce
+    redundant API calls.
+
+    Attributes:
+        BASE_URL: The base URL for all API requests.
+        DEFAULT_TIMEOUT: Default request timeout in seconds.
+        MAX_RETRIES: Maximum number of retry attempts for failed requests.
+    """
+
     BASE_URL = "https://api.weatherservice.example.com/v2"
     DEFAULT_TIMEOUT = 30
     MAX_RETRIES = 3
 
     def __init__(self, api_key: str, secret_key: Optional[str] = None,
                  units: Units = Units.METRIC, timeout: int = DEFAULT_TIMEOUT):
+        """Initialize the weather API client.
+
+        Args:
+            api_key: Your API key for authentication.
+            secret_key: Optional secret key used to sign requests via HMAC-SHA256.
+            units: Unit system for temperature and wind speed. Defaults to metric.
+            timeout: Request timeout in seconds. Defaults to 30.
+        """
         self._api_key = api_key
         self._secret_key = secret_key
         self._units = units
@@ -85,6 +105,15 @@ class WeatherApiClient:
         self._request_count = 0
 
     def _build_url(self, endpoint: str, params: Optional[dict] = None) -> str:
+        """Construct a full API URL with query parameters.
+
+        Args:
+            endpoint: The API endpoint path (e.g. "weather", "forecast").
+            params: Additional query parameters to include.
+
+        Returns:
+            The fully qualified URL with encoded query string.
+        """
         url = f"{self.BASE_URL}/{endpoint}"
         query_params = {"appid": self._api_key, "units": self._units.value}
         if params:
@@ -92,6 +121,18 @@ class WeatherApiClient:
         return f"{url}?{urlencode(query_params)}"
 
     def _sign_request(self, endpoint: str, timestamp: int) -> str:
+        """Generate an HMAC-SHA256 signature for a request.
+
+        The signature is computed over the string ``endpoint:timestamp:api_key``
+        using the secret key. If no secret key is configured, returns an empty string.
+
+        Args:
+            endpoint: The API endpoint being called.
+            timestamp: Unix timestamp of the request.
+
+        Returns:
+            Hex-encoded HMAC signature, or an empty string if signing is disabled.
+        """
         if not self._secret_key:
             return ""
         message = f"{endpoint}:{timestamp}:{self._api_key}"
@@ -102,6 +143,16 @@ class WeatherApiClient:
         ).hexdigest()
 
     def _get_cached(self, cache_key: str) -> Optional[Any]:
+        """Retrieve a value from the in-memory cache if it has not expired.
+
+        Expired entries are automatically removed.
+
+        Args:
+            cache_key: The unique key identifying the cached data.
+
+        Returns:
+            The cached data, or None if the key is missing or expired.
+        """
         if cache_key in self._cache:
             cached_time, cached_data = self._cache[cache_key]
             if time.time() - cached_time < self._cache_ttl:
@@ -110,9 +161,25 @@ class WeatherApiClient:
         return None
 
     def _set_cache(self, cache_key: str, data: Any) -> None:
+        """Store a value in the in-memory cache with the current timestamp.
+
+        Args:
+            cache_key: The unique key to store the data under.
+            data: The data to cache.
+        """
         self._cache[cache_key] = (time.time(), data)
 
     def get_current_weather(self, location: Location) -> WeatherData:
+        """Fetch current weather conditions for a location.
+
+        Results are cached for the duration of the cache TTL (default 300 s).
+
+        Args:
+            location: The location to query weather for.
+
+        Returns:
+            A WeatherData object with the current conditions.
+        """
         params = location.to_query_params()
         cache_key = f"current:{urlencode(params)}"
 
@@ -128,6 +195,21 @@ class WeatherApiClient:
         return weather
 
     def get_forecast(self, location: Location, days: int = 5) -> list[WeatherData]:
+        """Fetch a multi-day weather forecast for a location.
+
+        The API returns data in 3-hour intervals, so the number of entries
+        returned is ``days * 8``.
+
+        Args:
+            location: The location to query the forecast for.
+            days: Number of forecast days (1–16). Defaults to 5.
+
+        Returns:
+            A list of WeatherData objects representing the forecast.
+
+        Raises:
+            ValueError: If days is not between 1 and 16.
+        """
         if not 1 <= days <= 16:
             raise ValueError("Forecast days must be between 1 and 16")
 
@@ -147,6 +229,15 @@ class WeatherApiClient:
         return forecasts
 
     def get_air_quality(self, location: Location) -> dict:
+        """Fetch air quality data for a location.
+
+        Args:
+            location: The location to query. Latitude and longitude are required.
+
+        Returns:
+            A dict with keys ``aqi`` (Air Quality Index, 1–5),
+            ``components`` (pollutant concentrations), and ``timestamp``.
+        """
         params = {"lat": location.latitude, "lon": location.longitude}
         response = self._simulate_api_call("air_pollution", params)
         return {
@@ -156,6 +247,17 @@ class WeatherApiClient:
         }
 
     def batch_weather(self, locations: list[Location]) -> dict[str, WeatherData]:
+        """Fetch current weather for multiple locations at once.
+
+        Each location is queried individually via ``get_current_weather``.
+        Results are keyed by city name or "latitude,longitude" if no city is set.
+
+        Args:
+            locations: The list of locations to query.
+
+        Returns:
+            A dict mapping location identifiers to their current WeatherData.
+        """
         results = {}
         for loc in locations:
             key = loc.city or f"{loc.latitude},{loc.longitude}"
@@ -163,6 +265,15 @@ class WeatherApiClient:
         return results
 
     def _parse_weather_response(self, data: dict, location: Location) -> WeatherData:
+        """Parse a raw API response dict into a WeatherData object.
+
+        Args:
+            data: The raw JSON response from the API.
+            location: The location associated with this response.
+
+        Returns:
+            A populated WeatherData instance.
+        """
         main = data.get("main", {})
         wind = data.get("wind", {})
         weather_info = data.get("weather", [{}])[0]
@@ -184,6 +295,18 @@ class WeatherApiClient:
         )
 
     def _simulate_api_call(self, endpoint: str, params: dict) -> dict:
+        """Return a hardcoded response simulating an API call.
+
+        This is a placeholder used for demo/testing purposes. In a real
+        implementation it would perform an HTTP request to the weather service.
+
+        Args:
+            endpoint: The API endpoint to call.
+            params: Query parameters for the request.
+
+        Returns:
+            A dict mimicking the structure of a real API response.
+        """
         self._request_count += 1
         return {
             "main": {"temp": 22.5, "feels_like": 21.0, "humidity": 65, "pressure": 1013},
@@ -195,10 +318,16 @@ class WeatherApiClient:
         }
 
     def clear_cache(self) -> int:
+        """Clear all cached responses.
+
+        Returns:
+            The number of entries that were removed.
+        """
         count = len(self._cache)
         self._cache.clear()
         return count
 
     @property
     def request_count(self) -> int:
+        """The total number of API calls made by this client instance."""
         return self._request_count
